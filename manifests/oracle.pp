@@ -273,10 +273,9 @@ define java::oracle (
           }
           case $facts['os']['family'] {
             'Debian' : {
-              file{'/usr/lib/jvm':
-                ensure => directory,
-                before => Exec["Install Oracle java_se ${java_se} ${version}"]
-              }
+              ensure_resource('file', '/usr/lib/jvm', { ensure => 'directory' })
+
+              File['/usr/lib/jvm'] -> Exec["Install Oracle java_se ${java_se} ${version}"]
             }
             default : { }
           }
